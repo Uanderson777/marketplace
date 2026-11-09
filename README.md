@@ -2,7 +2,7 @@
 
 Projeto Java de marketplace, atualmente com uma base para representar clientes e persistir seus dados com Spring Data JPA.
 
-## Tecnologias
+## Tecnologias utilizadas
 
 - Java 21
 - Spring Boot 4.1.2
