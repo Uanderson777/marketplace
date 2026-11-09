@@ -1,6 +1,6 @@
 # Marketplace
 
-Projeto Java de marketplace. No estado atual, a aplicacao inclui o modelo de dominio de cliente e um repositorio Spring Data JPA para persistir e consultar clientes.
+Projeto Java de marketplace, atualmente com uma base para representar clientes e persistir seus dados com Spring Data JPA.
 
 ## Tecnologias
 
@@ -9,44 +9,56 @@ Projeto Java de marketplace. No estado atual, a aplicacao inclui o modelo de dom
 - Jakarta Persistence (JPA)
 - Spring Data JPA
 - Spring MVC
-- H2 e PostgreSQL (drivers/dependencias configurados no projeto)
+- H2 e PostgreSQL, declarados como dependências do projeto
 - Maven Wrapper
 
-## Estrutura atual
+Os testes de persistência usam H2 em memória.
+
+## Estrutura do projeto
 
 ```text
 .
-|-- .mvn/wrapper/
-|-- src/
-|   |-- main/
-|   |   |-- java/br/com/marketplace/
-|   |   |   |-- MarketplaceApplication.java
-|   |   |   `-- registration/
-|   |   |       |-- domain/
-|   |   |       |   |-- Customer.java
-|   |   |       |   `-- CustomerId.java
-|   |   |       `-- repository/
-|   |   |           `-- CustomerRepository.java
-|   |   `-- resources/application.properties
-|   `-- test/java/br/com/marketplace/
-|       |-- MarketplaceApplicationTests.java
-|       `-- registration/repository/CustomerRepositoryTest.java
-|-- mvnw
-|-- mvnw.cmd
-`-- pom.xml
+├── .mvn/
+│   └── wrapper/
+│       └── maven-wrapper.properties
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── br/com/marketplace/
+│   │   │       ├── MarketplaceApplication.java
+│   │   │       └── registration/
+│   │   │           ├── domain/
+│   │   │           │   ├── Customer.java
+│   │   │           │   └── CustomerId.java
+│   │   │           └── repository/
+│   │   │               └── CustomerRepository.java
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       ├── static/
+│   │       └── templates/
+│   └── test/
+│       └── java/
+│           └── br/com/marketplace/
+│               ├── MarketplaceApplicationTests.java
+│               └── registration/
+│                   └── repository/
+│                       └── CustomerRepositoryTest.java
+├── mvnw
+├── mvnw.cmd
+└── pom.xml
 ```
 
 ## Executar no Windows
 
-No PowerShell ou Prompt de Comando, a partir da raiz do projeto:
+No PowerShell ou no Prompt de Comando, a partir da raiz do projeto:
 
 ```powershell
 .\mvnw.cmd spring-boot:run
 ```
 
-## Testes
+## Executar os testes
 
-Para executar os testes Maven na raiz do projeto:
+Na raiz do projeto, execute:
 
 ```powershell
 .\mvnw.cmd test
@@ -54,7 +66,7 @@ Para executar os testes Maven na raiz do projeto:
 
 ## Funcionalidades implementadas
 
-- `Customer` e uma entidade JPA com nome, e-mail e identificador `CustomerId`.
-- `CustomerId` e um identificador embutivel JPA que encapsula um `UUID`. O construtor de `Customer` gera um UUID para cada nova instancia.
-- `CustomerRepository` estende `JpaRepository<Customer, CustomerId>` e fornece as operacoes padrao de persistencia e consulta do Spring Data JPA.
-- O teste de repositorio verifica a persistencia e a consulta de um cliente pelo identificador.
+- **`Customer`**: entidade JPA com identificador, nome e e-mail. O construtor público cria um identificador UUID aleatório encapsulado em `CustomerId`. A classe não define validações de nome ou e-mail.
+- **`CustomerId`**: `record` anotado com `@Embeddable`, que encapsula um `UUID` e pode ser usado como identificador embutido da entidade.
+- **`CustomerRepository`**: interface Spring Data JPA que estende `JpaRepository<Customer, CustomerId>`, disponibilizando as operações padrão de persistência e consulta.
+- **Teste do repositório**: verifica a gravação e a consulta de um cliente pelo identificador usando H2 em memória.
